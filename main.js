@@ -2,8 +2,39 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
-// Your JavaScript code goes here!
+const heart = document.querySelector('.like-glyph');
 
+const invokeMimicServerCall = () => {
+
+  //GET response function - adds Heart to the DOM
+  const addHeart = () => {
+    if(heart.textContent === EMPTY_HEART) {
+      heart.textContent = FULL_HEART;
+      heart.className = 'activated-heart';
+    } else {
+      heart.textContent = EMPTY_HEART;
+      heart.className = '';
+    }
+  };
+
+  //GET response function - returns server error
+  const returnError = (error) => {
+    const errorDiv = document.querySelector('#modal');
+    const errorMessage = document.querySelector('#modal-message');
+    
+    errorDiv.className = '';
+    errorMessage.textContent = error;
+
+    setTimeout(() => errorDiv.className = 'hidden', 3000);
+  };
+
+  mimicServerCall()
+  .then(() => addHeart())
+  .catch(error => returnError(error));
+
+};
+
+heart.addEventListener('click', invokeMimicServerCall);
 
 
 
